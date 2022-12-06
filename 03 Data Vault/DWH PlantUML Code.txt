@@ -1,0 +1,68 @@
+@startuml
+!theme cyborg
+hide circle
+'avoid problems with angled crows feet
+skinparam linetype ortho
+
+
+entity "H_Kunde" as h01 #line:blue;back:lightblue {
+*kunde_id : integer <<generated>>
+--
+*ort_id : integer <<FK>>
+*vorname : varchar(200)
+*nachname : varchar(200)
+*...
+}
+
+
+entity "H_Fahrzeug" as h02 #line:blue;back:lightblue {
+*fin : char(17) <<generated>>
+--
+*baujahr : integer
+*modell : varchar(200)
+*...
+}
+
+
+entity "S_Messung" as h06 #line:yellow;back:lightyellow {
+*messung_id : integer <<generated>>
+--
+*fin : char(17) <<FK>>
+*zeit : timestamp
+*geschwindigkeit : integer
+*ort_id : integer <<FK>>
+}
+
+
+entity "L_Kunde_besitzt_Fahrzeug" as h03 #line:red;back:pink {
+*lkbf_id : binary <<generated>>
+--
+*kunde_id : integer <<FK>>
+*fin : char(17) <<FK>>
+*...
+}
+
+entity "S_Hersteller" as h04 #line:yellow;back:lightyellow {
+*hersteller_code : char(3) <<generated>>
+--
+*fin : char(17) <<FK>>
+*hersteller : varchar(200)
+*erstellt_am : timstamp
+*quelle : varchar(20)
+}
+
+
+entity "S_kfzzuordnung" as h05 #line:yellow;back:lightyellow {
+*fin : char(17) <<PK,FK>>
+*kfz_kennzeichen : varchar(20) <<PK>>
+--
+*erstellt_am : timestamp
+*quelle : varchar(20)
+}
+
+h01 ||..o{ h03
+h02 ||..o{ h03
+h02 ||..|{ h04
+h02 ||..|{ h05
+h02 ||..|{ h06
+@enduml
